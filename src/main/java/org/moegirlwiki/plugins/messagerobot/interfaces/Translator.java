@@ -2,8 +2,8 @@ package org.moegirlwiki.plugins.messagerobot.interfaces;
 
 import java.util.Collection;
 
-public interface Translator {
-	public Message translate(OriginData origin);
+public interface Translator<D extends OriginData,M extends Message> {
+	public M translate(D origin);
 	
-	public Collection<Message> translate(Collection<OriginData> origin);
+	public Collection<M> translate(Collection<D> origin);
 }
