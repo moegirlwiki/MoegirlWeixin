@@ -6,7 +6,7 @@ import java.util.Collection;
  * the behavior of all pusher
  * @author xuechong
  */
-public interface Push {
-	public Object push(Message msg);
-	public Object push(Collection<Message> msgs);
+public interface Push <T extends Message>{
+	public Object push(T msg);
+	public Object push(Collection<T> msgs);
 }

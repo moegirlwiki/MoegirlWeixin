@@ -2,6 +2,6 @@ package org.moegirlwiki.plugins.messagerobot.interfaces;
 
 import java.util.List;
 
-public interface OriginDataGetter {
-	public List<OriginData> getOriginData();
+public interface OriginDataGetter <T extends OriginData>{
+	public List<T> getOriginData();
 }
