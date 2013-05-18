@@ -7,6 +7,6 @@ import java.util.Collection;
  * filter the forbidden words and expired and so on
  * @author xuechong
  */
-public interface DataFilter {
-	public Collection<OriginData> filter(Collection<OriginData> datas);
+public interface DataFilter<D extends OriginData> {
+	public Collection<D> filter(Collection<D> datas);
 }

@@ -7,12 +7,13 @@ import java.util.List;
  * the default robot behavior and props
  * @author xuechong
  */
-public abstract class AbstractRobot implements Runnable{
+public abstract class AbstractRobot<D extends OriginData,M extends Message> implements Runnable{
 	
-	protected Push pusher;
-	protected OriginDataGetter dataGetter;
-	protected Translator translator;
-	protected DataFilter filter;
+	protected Push<M> pusher;
+	protected OriginDataGetter<D> dataGetter;
+	protected Translator<D,M> translator;
+	protected DataFilter<D> filter;
+	protected RobotContext context;
 	
 	@Override
 	public void run() {
@@ -20,26 +21,28 @@ public abstract class AbstractRobot implements Runnable{
 	}
 	
 	public Object execute(){
-		List<OriginData> data = this.getDataGetter().getOriginData();
-		Collection<OriginData> filteData = filter.filter(data);
+		
+		List<D> data = this.getDataGetter().getOriginData(this.getContext());
+		Collection<D> filteData = filter.filter(data);
 		if(filteData!=null&&!filteData.isEmpty()){
-			Collection<Message> messages = this.getTranslator().translate(filteData);
+			Collection<M> messages = this.getTranslator().translate(filteData);
 			return  this.getPusher().push(messages);
 		}
 		return null;
 	}
 	
-	public abstract Push getPusher();
-	public abstract Translator getTranslator();
-	public abstract OriginDataGetter getDataGetter();
+	public abstract Push<M> getPusher();
+	public abstract Translator<D,M> getTranslator();
+	public abstract OriginDataGetter<D> getDataGetter();
+	protected abstract RobotContext getContext();
 	
-	public void setPusher(Push pusher) {
+	public void setPusher(Push<M> pusher) {
 		this.pusher = pusher;
 	}
-	public void setDataGetter(OriginDataGetter dataGetter) {
+	public void setDataGetter(OriginDataGetter<D> dataGetter) {
 		this.dataGetter = dataGetter;
 	}
-	public void setTranslator(Translator translator) {
+	public void setTranslator(Translator<D,M> translator) {
 		this.translator = translator;
 	}
 	

@@ -2,8 +2,6 @@ package org.moegirlwiki.plugins.messagerobot.impl;
 
 import java.util.Collection;
 
-import org.moegirlwiki.plugins.messagerobot.interfaces.Message;
-import org.moegirlwiki.plugins.messagerobot.interfaces.OriginData;
 import org.moegirlwiki.plugins.messagerobot.interfaces.Translator;
 import org.moegirlwiki.plugins.messagerobot.model.FeedEntry;
 import org.moegirlwiki.plugins.messagerobot.model.WeiXinMessage;

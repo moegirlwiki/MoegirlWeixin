@@ -9,12 +9,13 @@ import org.moegirlwiki.plugins.messagerobot.interfaces.OriginDataGetter;
 import org.moegirlwiki.plugins.messagerobot.interfaces.Push;
 import org.moegirlwiki.plugins.messagerobot.interfaces.RobotContext;
 import org.moegirlwiki.plugins.messagerobot.interfaces.Translator;
+import org.moegirlwiki.plugins.messagerobot.model.FeedEntry;
+import org.moegirlwiki.plugins.messagerobot.model.WeiXinMessage;
 
 @Robot
-public class WeixinRobot extends AbstractRobot{
+public class WeixinRobot extends AbstractRobot<FeedEntry,WeiXinMessage>{
 
 	private static final String CONFIG_NAME = "feedpusherconfig.properties";
-	private RobotContext context;
 	public WeixinRobot(){
 		try {
 			this.context = RobotContext.getContext(CONFIG_NAME);
@@ -24,20 +25,24 @@ public class WeixinRobot extends AbstractRobot{
 		}
 	}
 	@Override
-	public Push getPusher() {
+	public Push<WeiXinMessage> getPusher() {
 		return new WeiXinPusher();
 	}
 
 	@Override
-	public Translator getTranslator() {
+	public Translator<FeedEntry,WeiXinMessage> getTranslator() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public OriginDataGetter getDataGetter() {
+	public OriginDataGetter<FeedEntry> getDataGetter() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	@Override
+	protected RobotContext getContext() {
+		return this.context;
 	}
 
 }
