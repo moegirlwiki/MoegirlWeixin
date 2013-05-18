@@ -11,6 +11,7 @@ import org.moegirlwiki.plugins.messagerobot.interfaces.RobotContext;
 import org.moegirlwiki.plugins.messagerobot.interfaces.Translator;
 import org.moegirlwiki.plugins.messagerobot.model.FeedEntry;
 import org.moegirlwiki.plugins.messagerobot.model.WeiXinMessage;
+import org.moegirlwiki.plugins.messagerobot.utils.feed.FeedGetter;
 
 @Robot
 public class WeixinRobot extends AbstractRobot<FeedEntry,WeiXinMessage>{
@@ -23,6 +24,7 @@ public class WeixinRobot extends AbstractRobot<FeedEntry,WeiXinMessage>{
 			e.printStackTrace();
 			System.exit(0);
 		}
+		this.dataGetter = new FeedGetter();
 	}
 	@Override
 	public Push<WeiXinMessage> getPusher() {
@@ -37,8 +39,7 @@ public class WeixinRobot extends AbstractRobot<FeedEntry,WeiXinMessage>{
 
 	@Override
 	public OriginDataGetter<FeedEntry> getDataGetter() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.dataGetter;
 	}
 	@Override
 	protected RobotContext getContext() {

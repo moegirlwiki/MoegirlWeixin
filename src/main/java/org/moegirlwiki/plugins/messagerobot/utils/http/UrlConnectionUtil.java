@@ -41,7 +41,7 @@ public class UrlConnectionUtil {
 		connection.connect();
 		StringBuffer responseStr = new StringBuffer(""); 
 		try {
-			getResponseStr(parameters, connection);
+			responseStr = getResponseStr(parameters, connection);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

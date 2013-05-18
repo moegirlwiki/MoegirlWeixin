@@ -31,7 +31,7 @@ public class RobotContext {
 	@SuppressWarnings("unchecked")
 	private void loadProperties(String configName) throws FileNotFoundException, IOException {
 		Properties property = new Properties();
-		property.load(new FileInputStream(configName));
+		property.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(configName));
 		this.context = (Map<String, String>) property.clone();
 	}
 	
