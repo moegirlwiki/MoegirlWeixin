@@ -1,4 +1,4 @@
-package org.moegirlwiki.plugins.messagerobot.utils.feed;
+package org.moegirlwiki.plugins.messagerobot.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +19,7 @@ import org.moegirlwiki.plugins.messagerobot.utils.http.UrlConnectionUtil;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-public class FeedGetter implements OriginDataGetter<FeedEntry>{
+public class FeedDataGetter implements OriginDataGetter<FeedEntry>{
 
 	@Override
 	@SuppressWarnings("unchecked")
