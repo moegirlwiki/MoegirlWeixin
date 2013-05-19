@@ -45,5 +45,10 @@ public class WeixinRobot extends AbstractRobot<FeedEntry,WeiXinMessage>{
 	protected RobotContext getContext() {
 		return this.context;
 	}
+	@Override
+	public boolean selfCheck() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }
