@@ -1,11 +1,13 @@
 package org.moegirlwiki.plugins.messagerobot.robots;
 
 import java.io.IOException;
+import java.util.Queue;
 
 import org.moegirlwiki.plugins.messagerobot.annotations.Robot;
 import org.moegirlwiki.plugins.messagerobot.impl.FeedDataGetter;
 import org.moegirlwiki.plugins.messagerobot.impl.WeiXinPusher;
 import org.moegirlwiki.plugins.messagerobot.interfaces.AbstractRobot;
+import org.moegirlwiki.plugins.messagerobot.interfaces.DataFilter;
 import org.moegirlwiki.plugins.messagerobot.interfaces.OriginDataGetter;
 import org.moegirlwiki.plugins.messagerobot.interfaces.Push;
 import org.moegirlwiki.plugins.messagerobot.interfaces.RobotContext;
@@ -49,6 +51,11 @@ public class WeixinRobot extends AbstractRobot<FeedEntry,WeiXinMessage>{
 	public boolean selfCheck() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	@Override
+	protected Queue<DataFilter<FeedEntry>> getDataFilterQueue() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
