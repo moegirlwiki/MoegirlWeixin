@@ -1,17 +1,19 @@
 package org.moegirlwiki.plugins.messagerobot.robots;
 
 import java.io.IOException;
+import java.util.Queue;
 
 import org.moegirlwiki.plugins.messagerobot.annotations.Robot;
+import org.moegirlwiki.plugins.messagerobot.impl.FeedDataGetter;
 import org.moegirlwiki.plugins.messagerobot.impl.WeiXinPusher;
 import org.moegirlwiki.plugins.messagerobot.interfaces.AbstractRobot;
+import org.moegirlwiki.plugins.messagerobot.interfaces.DataFilter;
 import org.moegirlwiki.plugins.messagerobot.interfaces.OriginDataGetter;
 import org.moegirlwiki.plugins.messagerobot.interfaces.Push;
 import org.moegirlwiki.plugins.messagerobot.interfaces.RobotContext;
 import org.moegirlwiki.plugins.messagerobot.interfaces.Translator;
 import org.moegirlwiki.plugins.messagerobot.model.FeedEntry;
 import org.moegirlwiki.plugins.messagerobot.model.WeiXinMessage;
-import org.moegirlwiki.plugins.messagerobot.utils.feed.FeedGetter;
 
 @Robot
 public class WeixinRobot extends AbstractRobot<FeedEntry,WeiXinMessage>{
@@ -24,7 +26,7 @@ public class WeixinRobot extends AbstractRobot<FeedEntry,WeiXinMessage>{
 			e.printStackTrace();
 			System.exit(0);
 		}
-		this.dataGetter = new FeedGetter();
+		this.dataGetter = new FeedDataGetter();
 	}
 	@Override
 	public Push<WeiXinMessage> getPusher() {
@@ -49,6 +51,11 @@ public class WeixinRobot extends AbstractRobot<FeedEntry,WeiXinMessage>{
 	public boolean selfCheck() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	@Override
+	protected Queue<DataFilter<FeedEntry>> getDataFilterQueue() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
