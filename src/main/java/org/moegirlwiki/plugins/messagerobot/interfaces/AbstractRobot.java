@@ -1,9 +1,13 @@
 package org.moegirlwiki.plugins.messagerobot.interfaces;
 
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * the default robot behavior and props
@@ -23,13 +27,37 @@ public abstract class AbstractRobot<D extends OriginData,M extends Message> impl
 	protected abstract RobotContext getContext();
 	protected abstract List<DataFilter<D>> getDataFilters();
 	
+	protected Timer timer = new Timer();
+	
 	@Override
 	public void run() {
-		this.execute();
+		TimerTask task = new TimerTask() {
+			@Override
+			public void run() {
+				execute();
+			}
+		};
+		Long timePeriod ;
+		Double interval = Double.valueOf(this.getContext().getPushTimeInterval());
+		timePeriod = (long)(interval*1000*60*60);
+		timer.schedule(task, 0l, timePeriod);
 	}
 	
 	public void execute(){
-		sendMessage();
+		if(availableTime()){
+			sendMessage();
+		}
+	}
+	
+	public boolean availableTime(){
+		Integer curTime = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+		Integer timeStart = Integer.parseInt(this.getContext().getPushTimeStart());
+		Integer timeEnd = Integer.parseInt(this.getContext().getPushTimeEnd());
+		Integer timeDiff = Integer.parseInt(this.getContext().getTargetTimeZone())
+							- Integer.parseInt(this.getContext().getServerTimeZone());
+		
+		int targetTime = (curTime+timeDiff)%24;
+		return (targetTime>timeStart && targetTime<timeEnd);
 	}
 	
 	public Object sendMessage(){
