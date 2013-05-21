@@ -4,7 +4,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Queue;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -18,7 +17,7 @@ public abstract class AbstractRobot<D extends OriginData,M extends Message> impl
 	protected OriginDataGetter<D> dataGetter;
 	protected Translator<D,M> translator;
 	protected RobotContext context;
-	protected Queue<DataFilter<D>> dataFilters;
+	protected List<DataFilter<D>> dataFilters;
 	protected Timer timer = new Timer();
 	
 	public abstract Push<M> getPusher();
@@ -58,6 +57,7 @@ public abstract class AbstractRobot<D extends OriginData,M extends Message> impl
 			sendMessage();
 		}
 	}
+	
 	/**
 	 * check the time now 
 	 * @return
@@ -90,10 +90,13 @@ public abstract class AbstractRobot<D extends OriginData,M extends Message> impl
 	 * @author xuechong
 	 */
 	protected Collection<D> filterDatas(Collection<D> datas){
+		if(this.getDataFilters()==null||this.getDataFilters().isEmpty()){
+			return datas;
+		}
 		Iterator<DataFilter<D>> it = this.getDataFilters().iterator();
 		while (it.hasNext()) {
 			DataFilter<D> dataFilter = (DataFilter<D>) it.next();
-			datas= dataFilter.filter(datas);
+			datas= dataFilter.filter(datas,this.getContext());
 			if(datas==null||datas.isEmpty()){
 				break;
 			}
@@ -113,7 +116,7 @@ public abstract class AbstractRobot<D extends OriginData,M extends Message> impl
 	public void setTranslator(Translator<D,M> translator) {
 		this.translator = translator;
 	}
-	public void setDataFilters(Queue<DataFilter<D>> dataFilters) {
+	public void setDataFilters(List<DataFilter<D>> dataFilters) {
 		this.dataFilters = dataFilters;
 	}
 	

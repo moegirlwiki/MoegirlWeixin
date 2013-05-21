@@ -2,9 +2,12 @@ package org.moegirlwiki.plugins.messagerobot.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -14,9 +17,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.moegirlwiki.plugins.messagerobot.interfaces.OriginDataGetter;
 import org.moegirlwiki.plugins.messagerobot.interfaces.RobotContext;
 import org.moegirlwiki.plugins.messagerobot.model.FeedEntry;
-import org.moegirlwiki.plugins.messagerobot.utils.StringUtil;
-import org.moegirlwiki.plugins.messagerobot.utils.http.UrlConnectionUtil;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 public class FeedDataGetter implements OriginDataGetter<FeedEntry>{
@@ -36,10 +38,45 @@ public class FeedDataGetter implements OriginDataGetter<FeedEntry>{
 
 	@SuppressWarnings("unchecked")
 	private List<FeedEntry> analyze(Document document) {
+		List<FeedEntry> result = new LinkedList<FeedEntry>();
 		if(document==null){
 			return Collections.EMPTY_LIST;
 		}
-		return null;
+		
+		Node root = document.getElementsByTagName("feed").item(0);
+		if(root.getChildNodes().getLength()>0){
+			for (int i = 0, end = root.getChildNodes().getLength(); i < end; i++) {
+				
+				if("entry".equalsIgnoreCase(root.getChildNodes().item(i).getNodeName())){
+					FeedEntry feedEntry = new FeedEntry();
+					Node entry = root.getChildNodes().item(i);
+					
+					for (int j = 0;j< entry.getChildNodes().getLength();j++) {
+						Node prop = entry.getChildNodes().item(j);
+						if(prop.getNodeName().equalsIgnoreCase("title")){
+							feedEntry.setTitle(prop.getTextContent());
+						}
+						if(prop.getNodeName().equalsIgnoreCase("id")){
+							feedEntry.setId(prop.getTextContent());
+						}
+						if(prop.getNodeName().equalsIgnoreCase("author")){
+							feedEntry.setAuthor(prop.getTextContent());
+						}
+						if(prop.getNodeName().equalsIgnoreCase("updated")){
+							feedEntry.setUpdateTime(prop.getTextContent());
+						}
+						if(prop.getNodeName().equalsIgnoreCase("link")){
+							feedEntry.setLink(prop.getAttributes().
+									getNamedItem("href").getNodeValue());
+						}
+						
+					}
+					
+					result.add(feedEntry);
+				}
+			}
+		}
+		return result;
 	}
 	
 	Document read(String dataSource)
@@ -61,4 +98,5 @@ public class FeedDataGetter implements OriginDataGetter<FeedEntry>{
 		}
 		return null;
 	}
+	
 }
