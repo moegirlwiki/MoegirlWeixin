@@ -1,9 +1,11 @@
 package org.moegirlwiki.plugins.messagerobot.interfaces;
 
+import java.util.Calendar;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Queue;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * the default robot behavior and props
@@ -15,21 +17,61 @@ public abstract class AbstractRobot<D extends OriginData,M extends Message> impl
 	protected OriginDataGetter<D> dataGetter;
 	protected Translator<D,M> translator;
 	protected RobotContext context;
-	protected Queue<DataFilter<D>> dataFilterQueue;
+	protected List<DataFilter<D>> dataFilters;
+	protected Timer timer = new Timer();
 	
 	public abstract Push<M> getPusher();
 	public abstract Translator<D,M> getTranslator();
 	public abstract OriginDataGetter<D> getDataGetter();
 	protected abstract RobotContext getContext();
-	protected abstract Queue<DataFilter<D>> getDataFilterQueue();
+	protected abstract List<DataFilter<D>> getDataFilters();
+	/**
+	 * check the robot config & status etc.<br/>
+	 * the check method will be invoke before the main progress <br>
+	 * try to start the robot thread<br/>
+	 * if this method returns flase .the robot will not be started
+	 * @return
+	 */
+	public abstract boolean selfCheck();
 	
 	@Override
 	public void run() {
-		this.execute();
+		TimerTask task = new TimerTask() {
+			@Override
+			public void run() {
+				try {
+					execute();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		Long timePeriod ;
+		Double interval = Double.valueOf(this.getContext().getPushTimeInterval());
+		timePeriod = (long)(interval*1000*60*60);
+		timer.schedule(task, 0l, timePeriod);
 	}
 	
 	public void execute(){
-		sendMessage();
+		if(availableTime()){
+			sendMessage();
+		}
+	}
+	
+	/**
+	 * check the time now 
+	 * @return
+	 * @author xuechong
+	 */
+	public boolean availableTime(){
+		Integer curTime = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+		Integer timeStart = Integer.parseInt(this.getContext().getPushTimeStart());
+		Integer timeEnd = Integer.parseInt(this.getContext().getPushTimeEnd());
+		Integer timeDiff = Integer.parseInt(this.getContext().getTargetTimeZone())
+							- Integer.parseInt(this.getContext().getServerTimeZone());
+		
+		int targetTime = (curTime+timeDiff)%24;
+		return (targetTime>timeStart && targetTime<timeEnd);
 	}
 	
 	public Object sendMessage(){
@@ -48,20 +90,22 @@ public abstract class AbstractRobot<D extends OriginData,M extends Message> impl
 	 * @author xuechong
 	 */
 	protected Collection<D> filterDatas(Collection<D> datas){
-		Queue<DataFilter<D>> filters = new LinkedList<DataFilter<D>>(getDataFilterQueue());
-		
-		
+		if(this.getDataFilters()==null||this.getDataFilters().isEmpty()){
+			return datas;
+		}
+		Iterator<DataFilter<D>> it = this.getDataFilters().iterator();
+		while (it.hasNext()) {
+			DataFilter<D> dataFilter = (DataFilter<D>) it.next();
+			datas= dataFilter.filter(datas,this.getContext());
+			if(datas==null||datas.isEmpty()){
+				break;
+			}
+		}
 		return datas;
 	}
 
-	/**
-	 * check the robot config & status etc.<br/>
-	 * the check method will be invoke before the main progress <br>
-	 * try to start the robot thread<br/>
-	 * if this method returns flase .the robot will not be started
-	 * @return
-	 */
-	public abstract boolean selfCheck();
+	
+	
 	
 	public void setPusher(Push<M> pusher) {
 		this.pusher = pusher;
@@ -72,9 +116,8 @@ public abstract class AbstractRobot<D extends OriginData,M extends Message> impl
 	public void setTranslator(Translator<D,M> translator) {
 		this.translator = translator;
 	}
-	public void setDataFilterQueue(Queue<DataFilter<D>> dataFilterQueue) {
-		this.dataFilterQueue = dataFilterQueue;
+	public void setDataFilters(List<DataFilter<D>> dataFilters) {
+		this.dataFilters = dataFilters;
 	}
-	
 	
 }

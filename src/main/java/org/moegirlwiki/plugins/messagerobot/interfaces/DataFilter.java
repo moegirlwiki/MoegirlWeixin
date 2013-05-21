@@ -8,5 +8,5 @@ import java.util.Collection;
  * @author xuechong
  */
 public interface DataFilter<D extends OriginData> {
-	public Collection<D> filter(Collection<D> datas);
+	public Collection<D> filter(Collection<D> datas,RobotContext context);
 }
