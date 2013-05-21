@@ -1,7 +1,7 @@
 package org.moegirlwiki.plugins.messagerobot.interfaces;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 
@@ -15,13 +15,13 @@ public abstract class AbstractRobot<D extends OriginData,M extends Message> impl
 	protected OriginDataGetter<D> dataGetter;
 	protected Translator<D,M> translator;
 	protected RobotContext context;
-	protected Queue<DataFilter<D>> dataFilterQueue;
+	protected Queue<DataFilter<D>> dataFilters;
 	
 	public abstract Push<M> getPusher();
 	public abstract Translator<D,M> getTranslator();
 	public abstract OriginDataGetter<D> getDataGetter();
 	protected abstract RobotContext getContext();
-	protected abstract Queue<DataFilter<D>> getDataFilterQueue();
+	protected abstract List<DataFilter<D>> getDataFilters();
 	
 	@Override
 	public void run() {
@@ -48,9 +48,14 @@ public abstract class AbstractRobot<D extends OriginData,M extends Message> impl
 	 * @author xuechong
 	 */
 	protected Collection<D> filterDatas(Collection<D> datas){
-		Queue<DataFilter<D>> filters = new LinkedList<DataFilter<D>>(getDataFilterQueue());
-		
-		
+		Iterator<DataFilter<D>> it = this.getDataFilters().iterator();
+		while (it.hasNext()) {
+			DataFilter<D> dataFilter = (DataFilter<D>) it.next();
+			datas= dataFilter.filter(datas);
+			if(datas==null||datas.isEmpty()){
+				break;
+			}
+		}
 		return datas;
 	}
 
@@ -63,6 +68,7 @@ public abstract class AbstractRobot<D extends OriginData,M extends Message> impl
 	 */
 	public abstract boolean selfCheck();
 	
+	
 	public void setPusher(Push<M> pusher) {
 		this.pusher = pusher;
 	}
@@ -72,9 +78,8 @@ public abstract class AbstractRobot<D extends OriginData,M extends Message> impl
 	public void setTranslator(Translator<D,M> translator) {
 		this.translator = translator;
 	}
-	public void setDataFilterQueue(Queue<DataFilter<D>> dataFilterQueue) {
-		this.dataFilterQueue = dataFilterQueue;
+	public void setDataFilters(Queue<DataFilter<D>> dataFilters) {
+		this.dataFilters = dataFilters;
 	}
-	
 	
 }

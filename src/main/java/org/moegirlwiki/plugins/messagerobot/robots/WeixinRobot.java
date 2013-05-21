@@ -1,7 +1,7 @@
 package org.moegirlwiki.plugins.messagerobot.robots;
 
 import java.io.IOException;
-import java.util.Queue;
+import java.util.List;
 
 import org.moegirlwiki.plugins.messagerobot.annotations.Robot;
 import org.moegirlwiki.plugins.messagerobot.impl.FeedDataGetter;
@@ -53,7 +53,7 @@ public class WeixinRobot extends AbstractRobot<FeedEntry,WeiXinMessage>{
 		return false;
 	}
 	@Override
-	protected Queue<DataFilter<FeedEntry>> getDataFilterQueue() {
+	protected List<DataFilter<FeedEntry>> getDataFilters() {
 		// TODO Auto-generated method stub
 		return null;
 	}
