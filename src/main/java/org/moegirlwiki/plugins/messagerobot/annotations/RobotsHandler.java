@@ -25,7 +25,7 @@ public class RobotsHandler {
 		Set<Class<?>> classes = getPackageAllClasses("org.moegirlwiki.plugins.messagerobot.robots",false);
 		for (Class<?> clazz : classes) {
 			if(clazz.getAnnotation(Robot.class)!=null
-					&&clazz.getGenericSuperclass().getClass()==AbstractRobot.class.getClass()){
+					&&clazz.getSuperclass()==AbstractRobot.class){
 				result.add(clazz);
 			}
 		}

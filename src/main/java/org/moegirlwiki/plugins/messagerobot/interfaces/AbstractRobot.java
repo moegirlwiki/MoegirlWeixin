@@ -2,7 +2,6 @@ package org.moegirlwiki.plugins.messagerobot.interfaces;
 
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
@@ -20,21 +19,32 @@ public abstract class AbstractRobot<D extends OriginData,M extends Message> impl
 	protected Translator<D,M> translator;
 	protected RobotContext context;
 	protected Queue<DataFilter<D>> dataFilters;
+	protected Timer timer = new Timer();
 	
 	public abstract Push<M> getPusher();
 	public abstract Translator<D,M> getTranslator();
 	public abstract OriginDataGetter<D> getDataGetter();
 	protected abstract RobotContext getContext();
 	protected abstract List<DataFilter<D>> getDataFilters();
-	
-	protected Timer timer = new Timer();
+	/**
+	 * check the robot config & status etc.<br/>
+	 * the check method will be invoke before the main progress <br>
+	 * try to start the robot thread<br/>
+	 * if this method returns flase .the robot will not be started
+	 * @return
+	 */
+	public abstract boolean selfCheck();
 	
 	@Override
 	public void run() {
 		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
-				execute();
+				try {
+					execute();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		};
 		Long timePeriod ;
@@ -48,7 +58,11 @@ public abstract class AbstractRobot<D extends OriginData,M extends Message> impl
 			sendMessage();
 		}
 	}
-	
+	/**
+	 * check the time now 
+	 * @return
+	 * @author xuechong
+	 */
 	public boolean availableTime(){
 		Integer curTime = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 		Integer timeStart = Integer.parseInt(this.getContext().getPushTimeStart());
@@ -87,14 +101,7 @@ public abstract class AbstractRobot<D extends OriginData,M extends Message> impl
 		return datas;
 	}
 
-	/**
-	 * check the robot config & status etc.<br/>
-	 * the check method will be invoke before the main progress <br>
-	 * try to start the robot thread<br/>
-	 * if this method returns flase .the robot will not be started
-	 * @return
-	 */
-	public abstract boolean selfCheck();
+	
 	
 	
 	public void setPusher(Push<M> pusher) {

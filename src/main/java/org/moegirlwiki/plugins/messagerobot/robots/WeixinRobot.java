@@ -18,7 +18,7 @@ import org.moegirlwiki.plugins.messagerobot.model.WeiXinMessage;
 @Robot
 public class WeixinRobot extends AbstractRobot<FeedEntry,WeiXinMessage>{
 
-	private static final String CONFIG_NAME = "feedpusherconfig.properties";
+	private static final String CONFIG_NAME = "weixinpusherconfig.properties";
 	public WeixinRobot(){
 		try {
 			this.context = RobotContext.getContext(CONFIG_NAME);
