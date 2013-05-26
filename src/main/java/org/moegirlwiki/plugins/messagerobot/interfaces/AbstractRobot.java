@@ -79,7 +79,7 @@ public abstract class AbstractRobot<D extends OriginData,M extends Message> impl
 		Collection<D> filteData = filterDatas(data);
 		if(filteData!=null&&!filteData.isEmpty()){
 			Collection<M> messages = this.getTranslator().translate(filteData);
-			return  this.getPusher().push(messages);
+			return  this.getPusher().push(messages,this.getContext());
 		}
 		return null;
 	}

@@ -7,6 +7,6 @@ import java.util.Collection;
  * @author xuechong
  */
 public interface Push <M extends Message>{
-	public Object push(M msg);
-	public Object push(Collection<M> msgs);
+	public Object push(M msg,RobotContext context);
+	public Object push(Collection<M> msgs,RobotContext context);
 }
