@@ -55,6 +55,7 @@ public class UrlConnectionUtil {
 			throws IOException {
 		StringBuffer responseStr = new StringBuffer("");
 		OutputStream out = connection.getOutputStream();
+		
 		try {
 			out.write(buildParameterStr(parameters).getBytes("UTF-8"));
 			out.flush();
@@ -67,6 +68,7 @@ public class UrlConnectionUtil {
 		if(connection.getResponseCode()==200){
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
 					connection.getInputStream()));
+			
 			try {
 				for (String line = reader.readLine();line!=null;line = reader.readLine()) {
 					responseStr.append(line);
@@ -101,7 +103,7 @@ public class UrlConnectionUtil {
 	 * @return
 	 * @author xuechong
 	 */
-	private static String buildParameterStr(Collection<Parameter> parameters){
+	static String buildParameterStr(Collection<Parameter> parameters){
 		StringBuilder sb = new StringBuilder("");
 		if(parameters!=null&&parameters.size()>0){
 			for (Parameter param : parameters) {
