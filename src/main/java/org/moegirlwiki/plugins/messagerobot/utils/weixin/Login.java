@@ -12,6 +12,7 @@ import org.moegirlwiki.plugins.messagerobot.utils.http.mapping.Parameter;
  *
  */
 public class Login {
+	private Login(){}
 	
 	private static final String WEIXIN_LOGIN_URL = "https://mp.weixin.qq.com/cgi-bin/loginpage?t=wxm2-login&lang=zh_CN";
 	/**

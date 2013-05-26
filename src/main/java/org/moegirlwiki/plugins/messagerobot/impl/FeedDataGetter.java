@@ -51,6 +51,8 @@ public class FeedDataGetter implements OriginDataGetter<FeedEntry>{
 					
 					for (int j = 0;j< entry.getChildNodes().getLength();j++) {
 						Node prop = entry.getChildNodes().item(j);
+						
+						//you could use "switch" here if you doing this with Java7
 						if(prop.getNodeName().equalsIgnoreCase("title")){
 							feedEntry.setTitle(prop.getTextContent());
 						}

@@ -6,9 +6,10 @@ package org.moegirlwiki.plugins.messagerobot.utils.weixin;
  *
  */
 public class Send {
+	private Send(){}
 	private static final String WEIXIN_SEND_URL = "";
 	
-	public String sendMsg(String msg){
+	public static String sendMsg(String msg){
 		
 		
 		return null;

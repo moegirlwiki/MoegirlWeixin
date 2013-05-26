@@ -6,8 +6,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-
-
 /**
  * put this annotation on your {@link org.moegirlwiki.plugins.messagerobot.interfaces.AbstractRobot} class <br/>
  * in the {@link org.moegirlwiki.plugins.messagerobot.robots}package<br/>
@@ -17,6 +15,4 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)  
 @Documented 
-public @interface Robot {
-	
-}
+public @interface Robot {}

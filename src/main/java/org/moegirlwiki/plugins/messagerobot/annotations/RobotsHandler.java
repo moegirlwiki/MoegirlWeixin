@@ -33,10 +33,8 @@ public class RobotsHandler {
 	}
 	/**
 	 * 扫描包
-	 * @param basePackage
-	 *            基础包
-	 * @param recursive
-	 *            是否递归搜索子包
+	 * @param basePackage 基础包
+	 * @param recursive 是否递归搜索子包
 	 * @return Set
 	 */
 	private static Set<Class<?>> getPackageAllClasses(String basePackage,

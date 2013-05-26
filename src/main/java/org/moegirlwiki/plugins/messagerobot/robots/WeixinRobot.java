@@ -1,10 +1,14 @@
 package org.moegirlwiki.plugins.messagerobot.robots;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.moegirlwiki.plugins.messagerobot.annotations.Robot;
 import org.moegirlwiki.plugins.messagerobot.impl.FeedDataGetter;
+import org.moegirlwiki.plugins.messagerobot.impl.ForbiddenWordFilter;
+import org.moegirlwiki.plugins.messagerobot.impl.TimeFilter;
+import org.moegirlwiki.plugins.messagerobot.impl.WeiXinFeedTranslator;
 import org.moegirlwiki.plugins.messagerobot.impl.WeiXinPusher;
 import org.moegirlwiki.plugins.messagerobot.interfaces.AbstractRobot;
 import org.moegirlwiki.plugins.messagerobot.interfaces.DataFilter;
@@ -24,19 +28,22 @@ public class WeixinRobot extends AbstractRobot<FeedEntry,WeiXinMessage>{
 			this.context = RobotContext.getContext(CONFIG_NAME);
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.exit(0);
 		}
 		this.dataGetter = new FeedDataGetter();
+		this.pusher = new WeiXinPusher();
+		this.translator = new WeiXinFeedTranslator();
+		this.dataFilters = new ArrayList<DataFilter<FeedEntry>>(3);
+		this.dataFilters.add(new TimeFilter());
+		this.dataFilters.add(new ForbiddenWordFilter());
 	}
 	@Override
 	public Push<WeiXinMessage> getPusher() {
-		return new WeiXinPusher();
+		return this.pusher;
 	}
 
 	@Override
 	public Translator<FeedEntry,WeiXinMessage> getTranslator() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.translator;
 	}
 
 	@Override
@@ -49,13 +56,17 @@ public class WeixinRobot extends AbstractRobot<FeedEntry,WeiXinMessage>{
 	}
 	@Override
 	public boolean selfCheck() {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			new WeixinRobot();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 	@Override
 	protected List<DataFilter<FeedEntry>> getDataFilters() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.dataFilters;
 	}
 
 }
