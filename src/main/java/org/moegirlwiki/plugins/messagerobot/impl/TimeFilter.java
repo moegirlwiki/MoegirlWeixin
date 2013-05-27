@@ -16,7 +16,7 @@ import org.moegirlwiki.plugins.messagerobot.model.FeedEntry;
  */
 public class TimeFilter implements DataFilter<FeedEntry>{
 
-	private static final long longestTime = 1000l*60l*60l;
+	private static final long longestTime = 1*1000l*60l*60l;
 	private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-ddhh:mm:ss");
 	
 	@Override
@@ -38,11 +38,11 @@ public class TimeFilter implements DataFilter<FeedEntry>{
 		Date earliestDate =new Date(utc-longestTime);
 		
 		updateTime = updateTime.replaceAll("[a-zA-Z]", "");
-		System.out.println(earliestDate);
+		System.out.println(earliestDate);//TODO
 		
 		try {
 			Date pubDate = sdf.parse(updateTime);
-			System.out.println(pubDate);
+			System.out.println(pubDate);//TODO
 			return pubDate.after(earliestDate);
 		} catch (ParseException e) {
 			e.printStackTrace();

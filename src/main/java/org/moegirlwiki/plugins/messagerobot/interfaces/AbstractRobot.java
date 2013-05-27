@@ -8,7 +8,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * the default robot behavior and props
+ * the default robot behavior and props<br/>
+ * the robot classes should always have a public non-arg constructor
  * @author xuechong
  */
 public abstract class AbstractRobot<D extends OriginData,M extends Message> implements Runnable{
@@ -79,7 +80,7 @@ public abstract class AbstractRobot<D extends OriginData,M extends Message> impl
 		Collection<D> filteData = filterDatas(data);
 		if(filteData!=null&&!filteData.isEmpty()){
 			Collection<M> messages = this.getTranslator().translate(filteData);
-			return  this.getPusher().push(messages);
+			return  this.getPusher().push(messages,this.getContext());
 		}
 		return null;
 	}
@@ -104,9 +105,9 @@ public abstract class AbstractRobot<D extends OriginData,M extends Message> impl
 		return datas;
 	}
 
-	
-	
-	
+	///////////////////////
+	////GETTERS&SETTERS////
+	////////////////////////
 	public void setPusher(Push<M> pusher) {
 		this.pusher = pusher;
 	}

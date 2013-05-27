@@ -10,3 +10,6 @@ http://zh.moegirl.org/index.php?title=Special:%E6%9C%80%E6%96%B0%E9%A1%B5%E9%9D%
 每2小时向微信推送一条更新消息
 
 实际推送的内容应该经过关键词过滤.重复检查,时间检查
+
+请用maven构建
+

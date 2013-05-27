@@ -16,7 +16,7 @@ public class RobotContext {
 	private static final String PUSH_INTERVAL = "pushtimeinterval";
 	private static final String DATA_SOURCE = "datasource";
 	
-	Map<String, String> context;
+	private Map<String, String> context;
 	
 	private RobotContext(String configName) throws IOException{
 		loadProperties(configName);
@@ -43,7 +43,12 @@ public class RobotContext {
 	public static RobotContext getContext(String configName) throws IOException{
 		return new RobotContext(configName);
 	}
-	
+	/**
+	 * get the config value <br>
+	 * @param key
+	 * @return
+	 * @throws NullPointerException if no such value in file
+	 */
 	public String get(String key)throws NullPointerException{
 		if(StringUtil.isNotBlank(this.context.get(key).toString())){
 			return this.context.get(key);
