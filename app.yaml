@@ -1,0 +1,13 @@
+application: moegirlweixin
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /weixin
+  script: mainProcessor.app
+- url: /test
+  script: tester.app
+- url: /init
+  script: inits.app
