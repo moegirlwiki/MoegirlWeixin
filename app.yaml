@@ -1,5 +1,5 @@
 application: moegirlweixin
-version: 1
+version: 2beta
 runtime: python27
 api_version: 1
 threadsafe: true
@@ -11,3 +11,8 @@ handlers:
   script: tester.app
 - url: /init
   script: inits.app
+- url: /page
+  static_dir: page
+- url: /
+  static_files: page/index.html
+  upload: page/index.html

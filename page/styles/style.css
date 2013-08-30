@@ -1,0 +1,97 @@
+/* Main Css for WechatMoe */
+
+body
+{
+	background-color: #FFF9E9;
+}
+
+.Container
+{
+	position: absolute;
+
+	margin: auto;
+
+	left: 0px;
+	right: 0px;
+
+	top: 25px;
+
+	height: 750px;
+	width: 800px;
+}
+
+a
+{
+	color: #AFAFAF;
+	text-decoration: none;
+}
+
+.Container_QR
+{
+	position: absolute;
+
+	margin: auto;
+
+	top: 100px;
+
+	left: 0px;
+	right: 0px;
+
+	height: 400px;
+	width: 400px;
+
+	border: 1px #FFFFFF solid;
+	border-radius: 5px;
+	box-shadow: 0px 0px 25px #000000;
+}
+
+.Container_QRGuide
+{
+	position: absolute;
+
+	margin: auto;
+
+	top: 515px;
+
+	left: 0px;
+	right: 0px;
+
+	height: 30px;
+	width: 400px;
+
+	text-align: center;
+	font-family: 微软雅黑;
+	font-size: 20px;
+
+	text-shadow: 1px 1px 3px #5F5F5F;
+}
+
+.QRGuide_Secret
+{
+	background-color: #000000;
+	font-color: #000000;
+
+	text-shadow: none;
+}
+
+.Guide
+{
+	position: absolute;
+
+	margin: auto;
+
+	bottom: 55px;
+	left: 0px;
+	right: 0px;
+
+	width: 370px;
+	height: 100px;
+
+	font-size: 80%;
+	color: #9F9F9F;
+}
+
+.Guide_Secret
+{
+	text-decoration: line-through;
+}
